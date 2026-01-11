@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI House Predictor</title>
+    <style>
+        /* Modern Gradient Background */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Card Container with Animation */
+        .container {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 350px;
+            
+            /* Animation Logic */
+            animation: fadeInDown 1s ease-out;
+        }
+
+        /* Input Styling */
+        input {
+            padding: 15px;
+            width: 80%;
+            margin: 20px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #764ba2;
+        }
+
+        /* Button Styling with Hover Effect */
+        button {
+            padding: 15px 30px;
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #5b3a82;
+            transform: scale(1.05); /* Slight zoom on hover */
+        }
+
+        /* Define the Animation */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 { color: #333; margin-bottom: 10px; }
+        p { color: #666; font-size: 14px; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 Smart Estate AI</h1>
+        <p>Machine Learning Price Predictor</p>
+        <form action="/predict" method="post">
+            <input type="number" step="0.1" name="cents" placeholder="Enter Land Area (Cents)" required>
+            <br>
+            <button type="submit">Predict Price</button>
+        </form>
+    </div>
+</body>
+</html>

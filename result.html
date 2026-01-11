@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%); /* Different blue-purple gradient */
+            min-height: 100vh;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .result-box {
+            background: white;
+            max-width: 700px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            
+            /* Slide Up Animation */
+            animation: slideUp 0.8s ease-out;
+        }
+
+        h1 { color: #333; text-align: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; }
+        
+        .blueprint {
+            background: #1e1e1e; /* Dark theme for blueprint */
+            color: #00ff00; /* Hacker green text */
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            border-radius: 10px;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 20px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 16px; }
+        td { padding: 15px; border-bottom: 1px solid #eee; }
+        tr:last-child td { border-bottom: none; }
+        
+        .price-tag {
+            color: #2b5876;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .btn-home {
+            display: block;
+            width: 200px;
+            margin: 30px auto 0;
+            padding: 12px;
+            background: #ff6b6b;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn-home:hover {
+            transform: scale(1.05);
+            background: #ff5252;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="result-box">
+        <h1>📊 Prediction Report</h1>
+        <p><strong>Land Size:</strong> {{ cents }} Cents</p>
+        <p><strong>Recommended Configuration:</strong> {{ bhk }} BHK, {{ bath }} Baths</p>
+
+        <h3>Generative Blueprint</h3>
+        <div class="blueprint">{{ blueprint }}</div>
+
+        <h3>Financial Estimation</h3>
+        <table>
+            <tr>
+                <td>Base Construction (AI Estimate)</td>
+                <td>₹ {{ base_cost }}</td>
+            </tr>
+            <tr>
+                <td>Furniture & Interior Add-ons</td>
+                <td>₹ {{ furn_cost }}</td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+                <td><strong>TOTAL ESTIMATED COST</strong></td>
+                <td class="price-tag">₹ {{ total }}</td>
+            </tr>
+        </table>
+        
+        <a href="/" class="btn-home">Predict Another</a>
+    </div>
+
+</body>
+
+</html>
