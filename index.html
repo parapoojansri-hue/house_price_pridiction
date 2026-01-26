@@ -3,91 +3,204 @@
 <head>
     <title>AI House Predictor</title>
     <style>
-        /* Modern Gradient Background */
+        /* --- CSS STYLING --- */
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Card Container with Animation */
         .container {
             background: white;
-            padding: 50px;
+            padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             text-align: center;
-            width: 350px;
-            
-            /* Animation Logic */
-            animation: fadeInDown 1s ease-out;
+            width: 90%;
+            max-width: 700px;
         }
 
-        /* Input Styling */
         input {
-            padding: 15px;
-            width: 80%;
-            margin: 20px 0;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-            outline: none;
+            padding: 15px; width: 60%; margin: 20px 0;
+            border: 2px solid #ddd; border-radius: 10px; font-size: 16px;
         }
 
-        input:focus {
-            border-color: #764ba2;
-        }
-
-        /* Button Styling with Hover Effect */
         button {
-            padding: 15px 30px;
-            background: #764ba2;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.3s;
+            padding: 15px 30px; background: #764ba2; color: white;
+            border: none; border-radius: 30px; font-size: 16px; cursor: pointer;
             font-weight: bold;
         }
+        button:hover { background: #5b3a82; transform: scale(1.05); }
 
-        button:hover {
-            background: #5b3a82;
-            transform: scale(1.05); /* Slight zoom on hover */
+        /* Result Section Hidden Initially */
+        #result-section { display: none; animation: slideUp 0.5s ease-out; }
+        
+        .blueprint {
+            background: #1e1e1e; color: #00ff00;
+            padding: 15px; font-family: 'Courier New', monospace;
+            border-radius: 10px; white-space: pre; overflow-x: auto;
+            margin: 20px 0; font-size: 11px; text-align: left;
         }
 
-        /* Define the Animation */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h1 { color: #333; margin-bottom: 10px; }
-        p { color: #666; font-size: 14px; }
-
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+        .price-tag { color: #2b5876; font-size: 24px; font-weight: bold; text-align: right; }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>🏠 Smart Estate AI</h1>
-        <p>Machine Learning Price Predictor</p>
-        <form action="/predict" method="post">
-            <input type="number" step="0.1" name="cents" placeholder="Enter Land Area (Cents)" required>
+        <div id="input-section">
+            <h1>🏠 Smart Estate AI</h1>
+            <p>Machine Learning Price Predictor (15L per Cent Logic)</p>
+            <input type="number" id="centsInput" step="0.1" placeholder="Enter Land Area (Cents)">
             <br>
-            <button type="submit">Predict Price</button>
-        </form>
+            <button onclick="predictPrice()">Predict Price</button>
+        </div>
+
+        <div id="result-section">
+            <h1>📊 Prediction Report</h1>
+            <p><strong>Config:</strong> <span id="res-config"></span></p>
+
+            <h3>Generative Blueprint</h3>
+            <div class="blueprint" id="res-blueprint"></div>
+
+            <h3>Financial Estimation</h3>
+            <table>
+                <tr>
+                    <td>Base Structure (75%)</td>
+                    <td style="text-align: right;">₹ <span id="res-base"></span></td>
+                </tr>
+                <tr>
+                    <td>Furniture & Interior (25%)</td>
+                    <td style="text-align: right;">₹ <span id="res-furn"></span></td>
+                </tr>
+                <tr style="background-color: #f9f9f9;">
+                    <td><strong>TOTAL ESTIMATED COST</strong></td>
+                    <td class="price-tag">₹ <span id="res-total"></span></td>
+                </tr>
+            </table>
+            <br>
+            <button onclick="location.reload()" style="background: #ff6b6b;">Predict Another</button>
+        </div>
     </div>
+
+    <script>
+        function predictPrice() {
+            // 1. Get Input
+            const cents = parseFloat(document.getElementById('centsInput').value);
+            if (!cents || cents <= 0) { alert("Please enter a valid number"); return; }
+
+            // 2. PRICING LOGIC (Ported from your Python code)
+            // Rule: 15 Lakhs per Cent
+            const basePrice = cents * 1500000;
+            
+            // Add random noise (+/- 5000)
+            const noise = Math.floor(Math.random() * 10000) - 5000;
+            const finalPrice = basePrice + noise;
+
+            // Split 75% / 25%
+            const structureCost = finalPrice * 0.75;
+            const furnitureCost = finalPrice * 0.25;
+
+            // 3. BLUEPRINT LOGIC (Ported from your Python strings)
+            let blueprint = "";
+            let config = "";
+
+            if (cents < 1.8) {
+                config = "1 BHK Compact";
+                blueprint = `
+    +---------------------------+
+    |          |                |
+    |  KITCHEN |   BEDROOM      |
+    |  (6'x7') |   (9'x10')     |
+    |          |                |
+    |----------+-------+--------|
+    |          |       |  ATT.  |
+    |   HALL   | GOD   |  BATH  |
+    | (10'x10')| SHELF | (4'x6')|
+    |          |       |        |
+    +---------------------------+
+    [ ESTIMATE: ~₹15 Lakhs ]`;
+            } 
+            else if (cents < 2.8) {
+                config = "2 BHK Standard";
+                blueprint = `
+    +-----------------------+------------------+
+    |           |           |                  |
+    |  KITCHEN  | GUEST     |   MASTER BED     |
+    |  (8'x10') | BATH      |   (11'x12')      |
+    |           | (4'x6')   |                  |
+    |-----------+-----------+--------+---------|
+    |                       |        |         |
+    |      LIVING HALL      |        |  ATT.   |
+    |      (14'x 12')       |        |  BATH   |
+    |                       |        | (4'x6') |
+    |-----------+-----------|        |         |
+    |           |           |        |         |
+    |  GOD ROOM | SMALL BED |        |         |
+    |  (4'x5')  | (9'x10')  |        |         |
+    +-----------+-----------+--------+---------+
+    [ ESTIMATE: ~₹30 Lakhs ]`;
+            } 
+            else if (cents < 3.8) {
+                config = "3 BHK Luxury";
+                blueprint = `
+    +-----------------------------+-----------------------------+
+    |              |              |                             |
+    |  BEDROOM 2   |  ATT. BATH   |         KITCHEN             |
+    |  (11'x11')   |   (5'x7')    |        (10'x10')            |
+    |              |              |                             |
+    |--------------+--------------+-------------+---------------|
+    |                             |             |               |
+    |        CENTRAL HALL         |             |   UTILITY     |
+    |        (16' x 16')          |-------------+---------------|
+    |                             |             |   GOD ROOM    |
+    |                             |             |    (6'x6')    |
+    |-----------------------------+-------------+---------------|
+    |              |              |                             |
+    |  MASTER BED  |  ATT. BATH   |        SIT-OUT /            |
+    |  (12'x13')   |   (5'x7')    |        PARKING              |
+    +--------------+--------------+-----------------------------+
+    [ ESTIMATE: ~₹45 Lakhs ]`;
+            } 
+            else {
+                config = `${Math.floor(cents)} BHK Premium Villa`;
+                blueprint = `
+    [ ${cents} CENTS: LUXURY CUSTOM PLAN ]
+    +-------------------------------------------------------+
+    |                                                       |
+    |    CUSTOM LUXURY VILLA LAYOUT (${Math.floor(cents)} BHK)      |
+    |    (Consult Architect for detailed Drawing)           |
+    |                                                       |
+    |    - ${Math.floor(cents)} Master Suites with Baths            |
+    |    - Grand Hall + Family Lounge                       |
+    |    - Large Kitchen + Utility                          |
+    |    - Dedicated Pooja Room                             |
+    |                                                       |
+    +-------------------------------------------------------+`;
+            }
+
+            // 4. UPDATE UI
+            document.getElementById('res-config').innerText = config;
+            document.getElementById('res-blueprint').innerText = blueprint;
+            document.getElementById('res-base').innerText = Math.round(structureCost).toLocaleString('en-IN');
+            document.getElementById('res-furn').innerText = Math.round(furnitureCost).toLocaleString('en-IN');
+            document.getElementById('res-total').innerText = Math.round(finalPrice).toLocaleString('en-IN');
+
+            // Show Result
+            document.getElementById('input-section').style.display = 'none';
+            document.getElementById('result-section').style.display = 'block';
+            
+            // Change bg color
+            document.body.style.background = "linear-gradient(135deg, #2b5876 0%, #4e4376 100%)";
+        }
+    </script>
 </body>
 </html>
